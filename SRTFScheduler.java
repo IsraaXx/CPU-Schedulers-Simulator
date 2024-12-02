@@ -16,23 +16,30 @@ public class SRTFScheduler{
         PriorityQueue<Process> readyQueue = new PriorityQueue<>(
                 Comparator.comparingDouble((Process p) -> p.getRemainingTime() - p.getAge() / 10.0)
                         .thenComparingInt(Process::getArrivalTime));
+        Process lastProcess = null; // Track the last executed process
 
         while (completed < processes.size()) {
+            // Add processes to the queue based on their arrival time
             for (Process p : processes) {
                 if (p.getArrivalTime() <= currentTime && p.getRemainingTime() > 0 && !readyQueue.contains(p)) {
                     readyQueue.add(p);
                 }
             }
-
+            // If no process is ready, increment time
             if (readyQueue.isEmpty()) {
                 currentTime++;
                 continue;
             }
 
             Process currentProcess = readyQueue.poll();
+            // Check if a context switch is needed
+            if (lastProcess != null && currentProcess != lastProcess) {
+                currentTime += contextSwitchTime; // Increment time for the context switch
+            }
             currentTime++;
             int currentProcessRemainingTime = currentProcess.getRemainingTime();
             currentProcess.setRemainingTime(currentProcessRemainingTime-1);
+            lastProcess = currentProcess; // Update the last executed process
 
             if (currentProcess.getRemainingTime() == 0) {
                 completed++;
@@ -43,16 +50,12 @@ public class SRTFScheduler{
 
                 System.out.println("Process " + currentProcess.name + ": Waiting Time = " + currentProcess.getWaitingTime()
                         + ", Turnaround Time = " + currentProcess.getTurnaroundTime());
-
-                currentTime += contextSwitchTime;
                 currentProcess.setAge(0);
             }
-            
+
             else {
                 // If not completed, re-add the process to the queue
                 readyQueue.add(currentProcess);
-
-
             }
             for (Process p : readyQueue) {
                 p.setAge(p.getAge()+1);
