@@ -1,6 +1,6 @@
 public class Process {
     String name, color;
-    private int arrivalTime, burstTime, priority, remainingTime, quantum, waitingTime, turnaroundTime;
+    private int arrivalTime, burstTime, priority, remainingTime, quantum, waitingTime, turnaroundTime, age, secondBurstTime;
 
     public Process(String name, String color, int arrivalTime, int burstTime, int priority) {
         this.name = name;
@@ -9,6 +9,8 @@ public class Process {
         this.burstTime = burstTime;
         this.priority = priority;
         this.remainingTime = burstTime;
+        this.age = 0;
+        this.secondBurstTime = burstTime;
     }
 
     public int getArrivalTime() {
@@ -65,5 +67,21 @@ public class Process {
 
     public void setTurnaroundTime(int turnaroundTime) {
         this.turnaroundTime = turnaroundTime;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getSecondBurstTime() {
+        return secondBurstTime;
+    }
+
+    public void setSecondBurstTime(int secondBurstTime) {
+        this.secondBurstTime = secondBurstTime;
     }
 }
