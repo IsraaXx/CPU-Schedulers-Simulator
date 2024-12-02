@@ -1,7 +1,4 @@
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Scanner;
+import java.util.*;
 
 public class SRTFScheduler{
     private int contextSwitchTime;
@@ -12,8 +9,13 @@ public class SRTFScheduler{
 
     private void schedule(List<Process> processes) {
         System.out.println("\n=== Shortest Remaining Time First (SRTF) ===");
+//        Collections.sort(processes, Comparator.comparingInt(Process::getArrivalTime));
+        processes.sort(Comparator.comparingInt((Process p) -> p.getArrivalTime()));
+
         int currentTime = 0, completed = 0, totalWaitingTime = 0, totalTurnaroundTime = 0;
-        PriorityQueue<Process> readyQueue = new PriorityQueue<>(Comparator.comparingInt(p -> p.getRemainingTime()));
+        PriorityQueue<Process> readyQueue = new PriorityQueue<>(
+                Comparator.comparingDouble((Process p) -> p.getRemainingTime() - p.getAge() / 10.0)
+                        .thenComparingInt(Process::getArrivalTime));
 
         while (completed < processes.size()) {
             for (Process p : processes) {
@@ -43,6 +45,17 @@ public class SRTFScheduler{
                         + ", Turnaround Time = " + currentProcess.getTurnaroundTime());
 
                 currentTime += contextSwitchTime;
+                currentProcess.setAge(0);
+            }
+            
+            else {
+                // If not completed, re-add the process to the queue
+                readyQueue.add(currentProcess);
+
+
+            }
+            for (Process p : readyQueue) {
+                p.setAge(p.getAge()+1);
             }
         }
 
