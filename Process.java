@@ -92,7 +92,4 @@ public class Process {
     }
 }
 
-    public void setSecondBurstTime(int secondBurstTime) {
-        this.secondBurstTime = secondBurstTime;
-    }
-}
+
