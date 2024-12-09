@@ -1,4 +1,5 @@
 
+
 package com.example.demojavafx;
 
 import javafx.application.Application;
@@ -87,13 +88,13 @@ public class HelloApplication extends Application {
             List<Process> executionOrder = new ArrayList<>();
             if (selectedAlgorithm.equals("Priority Scheduling")) {
                 PriorityScheduler priorityScheduler = new PriorityScheduler();
-                executionOrder = priorityScheduler.simulatePriorityScheduling(processData, contextSwitch); // Context switch time = 1
+                executionOrder = priorityScheduler.simulatePriorityScheduling(processData, contextSwitch);
             } else if (selectedAlgorithm.equals("Shortest Job First (SJF)")) {
                 SJFScheduler sjfScheduler = new SJFScheduler();
-                executionOrder = sjfScheduler.simulateSJF(processData, contextSwitch); // Context switch time = 1
+                executionOrder = sjfScheduler.simulateSJF(processData, contextSwitch);
             } else if (selectedAlgorithm.equals("Shortest Remaining Time First (SRTF)")) {
                 SRTFScheduler srtfScheduler = new SRTFScheduler();
-                executionOrder = srtfScheduler.simulateSRTF(processData, contextSwitch); // Context switch time = 1
+                executionOrder = srtfScheduler.simulateSRTF(processData, contextSwitch);
             }
 
             // Refresh the table to show updated waiting and turnaround times
@@ -110,38 +111,34 @@ public class HelloApplication extends Application {
         ganttChartComboBox.setValue("Show Gantt Chart");
 
         // Event handler for Gantt Chart ComboBox
-        ganttChartComboBox.setOnAction(event -> {
-            String selectedOption = ganttChartComboBox.getValue();
-            ganttChartPane.setVisible(selectedOption.equals("Show Gantt Chart"));
-        });
+        ganttChartComboBox.setOnAction(event -> ganttChartPane.setVisible(ganttChartComboBox.getValue().equals("Show Gantt Chart")));
 
         // Input Section
         VBox inputSection = createInputSection();
 
         // VBox for scheduling algorithm
         VBox algorithmBox = new VBox(10);
-        algorithmBox.setStyle("-fx-padding: 10;");
         algorithmBox.getChildren().addAll(ganttChartComboBox, algorithmComboBox, runButton);
 
-        // VBox for Gantt Chart (separate container)
+        // VBox for Gantt Chart
         VBox ganttChartBox = new VBox(10);
-        ganttChartBox.setStyle("-fx-padding: 30; -fx-border-color: gray; -fx-border-width: 0;");
         ganttChartBox.getChildren().add(ganttChartPane);
 
-        // Main VBox container to hold everything
-        VBox mainContainer = new VBox(10);
-        mainContainer.getChildren().addAll(inputSection, algorithmBox, ganttChartBox, table);
+        // Main Layout
+        BorderPane mainLayout = new BorderPane();
+        mainLayout.setTop(inputSection);
+        mainLayout.setCenter(table);
+        mainLayout.setBottom(new VBox(10, algorithmBox, ganttChartBox));
 
         // Set up the Scene and Stage
-        Scene scene = new Scene(mainContainer, 1000, 800);
+        Scene scene = new Scene(mainLayout, 1000, 600);
         primaryStage.setTitle("CPU Scheduling Visualizer");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     private VBox createInputSection() {
-        VBox inputSection = new VBox(10);
-        inputSection.setStyle("-fx-padding: 10; -fx-border-color: #000000; -fx-border-width: 1;");
+        VBox inputSection = new VBox(5);
 
         TextField nameField = new TextField();
         nameField.setPromptText("Process Name");
@@ -158,10 +155,10 @@ public class HelloApplication extends Application {
         priorityField.setPromptText("Priority");
 
         TextField contextSwitchField = new TextField();
-        contextSwitchField.setPromptText("Context");
+        contextSwitchField.setPromptText("Context Switch");
 
         TextField quantumTimeField = new TextField();
-        quantumTimeField.setPromptText("Quantum");
+        quantumTimeField.setPromptText("Quantum Time");
 
         Button addProcessButton = new Button("Add Process");
         addProcessButton.setOnAction(e -> {
@@ -174,7 +171,6 @@ public class HelloApplication extends Application {
                 contextSwitch = Integer.parseInt(contextSwitchField.getText());
                 int quantum = Integer.parseInt(quantumTimeField.getText());
 
-
                 processData.add(new Process(name, color, arrivalTime, burstTime, priority, quantum));
 
                 nameField.clear();
@@ -183,13 +179,11 @@ public class HelloApplication extends Application {
                 priorityField.clear();
                 contextSwitchField.clear();
                 quantumTimeField.clear();
-
             } catch (NumberFormatException ex) {
                 showAlert("Invalid Input", "Please enter valid numeric values for Arrival Time, Burst Time, and Priority.");
             }
         });
 
-        // Labels for average times
         avgWaitingTimeLabel = new Label("Average Waiting Time: -");
         avgTurnaroundTimeLabel = new Label("Average Turnaround Time: -");
 
@@ -199,9 +193,8 @@ public class HelloApplication extends Application {
                 new Label("Arrival Time:"), arrivalTimeField,
                 new Label("Burst Time:"), burstTimeField,
                 new Label("Priority:"), priorityField,
-                new Label("Context:"), contextSwitchField,
-                new Label("Quantum:"), quantumTimeField,
-
+                new Label("Context Switch:"), contextSwitchField,
+                new Label("Quantum Time:"), quantumTimeField,
                 addProcessButton,
                 avgWaitingTimeLabel, avgTurnaroundTimeLabel
         );
@@ -210,14 +203,14 @@ public class HelloApplication extends Application {
     }
 
     private void drawGanttChart(List<Process> executionOrder) {
-        ganttChartPane.getChildren().clear(); // Clear previous chart
+        ganttChartPane.getChildren().clear();
 
-        double x = 10; // Starting x position
-        double y = 10; // Fixed y position
-        double height = 50; // Height of each block
+        double x = 10;
+        double y = 10;
+        double height = 50;
 
         for (Process p : executionOrder) {
-            double width = p.getBurstTime() * 20; // Scale burst time for visualization
+            double width = p.getBurstTime() * 20;
             Rectangle rect = new Rectangle(x, y, width, height);
             rect.setFill(Color.web(p.getColor()));
             rect.setStroke(Color.BLACK);
@@ -227,7 +220,7 @@ public class HelloApplication extends Application {
             label.setLayoutY(y + height / 2 - 10);
 
             ganttChartPane.getChildren().addAll(rect, label);
-            x += width + 5; // Move to the next position
+            x += width + 5;
         }
     }
 
@@ -240,8 +233,8 @@ public class HelloApplication extends Application {
             totalTurnaroundTime += p.getTurnaroundTime();
         }
 
-        double avgWaitingTime = Math.ceil(totalWaitingTime / processData.size());
-        double avgTurnaroundTime = Math.ceil(totalTurnaroundTime / processData.size());
+        double avgWaitingTime = totalWaitingTime / processData.size();
+        double avgTurnaroundTime = totalTurnaroundTime / processData.size();
 
         avgWaitingTimeLabel.setText(String.format("Average Waiting Time: %.2f", avgWaitingTime));
         avgTurnaroundTimeLabel.setText(String.format("Average Turnaround Time: %.2f", avgTurnaroundTime));
