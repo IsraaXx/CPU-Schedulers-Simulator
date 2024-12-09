@@ -1,7 +1,8 @@
 public class Process {
     String name, color;
-    private int arrivalTime, burstTime, priority, remainingTime, quantum, waitingTime, turnaroundTime, age, secondBurstTime;
+    int arrivalTime, burstTime, priority, remainingTime, remainingQuantum,quantum, waitingTime, turnaroundTime, age, secondBurstTime;
     double FCAIFactor = 0.0;
+    int ExecutionAmount ;
 
     public Process(String name, String color, int arrivalTime, int burstTime, int priority,int quantum) {
         this.name = name;
@@ -12,12 +13,13 @@ public class Process {
         this.remainingTime = burstTime;
         this.quantum = quantum;
         this.age = 0;
+        this.ExecutionAmount = 0;
         this.secondBurstTime = burstTime;
     }
 
-    public void calculateFCAIFactor(double V1, double V2) {
-        FCAIFactor = (10 - priority) + (arrivalTime / V1) + (remainingTime / V2);
-    }
+    // public void calculateFCAIFactor(double V1, double V2) {
+    //     FCAIFactor = (10 - priority) + ((double)arrivalTime / V1) + ((double)remainingTime / V2);
+    // }
 
     public int getArrivalTime() {
         return arrivalTime;
@@ -51,6 +53,13 @@ public class Process {
         this.remainingTime = remainingTime;
     }
 
+    public int getRemainingQuantum() {
+        return remainingQuantum;
+    }
+
+    public void setRemainingQuantum(int remainingQuantum) {
+        this.remainingQuantum=remainingQuantum;
+    }
     public int getQuantum() {
         return quantum;
     }
@@ -92,4 +101,5 @@ public class Process {
     }
 }
 
+   
 
