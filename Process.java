@@ -1,105 +1,119 @@
+package com.example.demojavafx;
+
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 public class Process {
-    String name, color;
-    int arrivalTime, burstTime, priority, remainingTime, remainingQuantum,quantum, waitingTime, turnaroundTime, age, secondBurstTime;
-    double FCAIFactor = 0.0;
+    public SimpleStringProperty name, color;
+    public SimpleIntegerProperty arrivalTime, burstTime, priority, remainingTime, quantum, waitingTime, turnaroundTime, age, secondBurstTime;
+
+    public double FCAIFactor = 0.0;
     int ExecutionAmount ;
 
-    public Process(String name, String color, int arrivalTime, int burstTime, int priority,int quantum) {
-        this.name = name;
-        this.color = color;
-        this.arrivalTime = arrivalTime;
-        this.burstTime = burstTime;
-        this.priority = priority;
-        this.remainingTime = burstTime;
-        this.quantum = quantum;
-        this.age = 0;
-        this.ExecutionAmount = 0;
-        this.secondBurstTime = burstTime;
+    public Process(String name, String color, int arrivalTime, int burstTime, int priority, int quantum) {
+        this.name = new SimpleStringProperty(name);
+        this.color = new SimpleStringProperty(color);
+        this.arrivalTime = new SimpleIntegerProperty(arrivalTime);
+        this.burstTime = new SimpleIntegerProperty(burstTime);
+        this.priority = new SimpleIntegerProperty(priority);
+        this.remainingTime = new SimpleIntegerProperty(burstTime);
+        this.age = new SimpleIntegerProperty(0);
+        this.secondBurstTime = new SimpleIntegerProperty(burstTime);
+        // Initialize the missing SimpleIntegerProperty fields
+        this.waitingTime = new SimpleIntegerProperty(0); // Initialize with default value 0
+        this.turnaroundTime = new SimpleIntegerProperty(0);
+        this.quantum = new SimpleIntegerProperty(quantum);
+        this.ExecutionAmount = 0;// Initialize with default value 0
     }
 
-    // public void calculateFCAIFactor(double V1, double V2) {
-    //     FCAIFactor = (10 - priority) + ((double)arrivalTime / V1) + ((double)remainingTime / V2);
-    // }
+    // Getters and Setters using the new property types
+
+    public String getName() {
+        return name.get();
+    }
+
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
+    public String getColor() {
+        return color.get();
+    }
+
+    public void setColor(String color) {
+        this.color.set(color);
+    }
 
     public int getArrivalTime() {
-        return arrivalTime;
+        return arrivalTime.get();
     }
 
     public void setArrivalTime(int arrivalTime) {
-        this.arrivalTime = arrivalTime;
+        this.arrivalTime.set(arrivalTime);
     }
 
     public int getBurstTime() {
-        return burstTime;
+        return burstTime.get();
     }
 
     public void setBurstTime(int burstTime) {
-        this.burstTime = burstTime;
+        this.burstTime.set(burstTime);
     }
 
     public int getPriority() {
-        return priority;
+        return priority.get();
     }
 
     public void setPriority(int priority) {
-        this.priority = priority;
+        this.priority.set(priority);
     }
 
     public int getRemainingTime() {
-        return remainingTime;
+        return remainingTime.get();
     }
 
     public void setRemainingTime(int remainingTime) {
-        this.remainingTime = remainingTime;
+        this.remainingTime.set(remainingTime);
     }
 
-    public int getRemainingQuantum() {
-        return remainingQuantum;
-    }
-
-    public void setRemainingQuantum(int remainingQuantum) {
-        this.remainingQuantum=remainingQuantum;
-    }
     public int getQuantum() {
-        return quantum;
+        return quantum.get();
     }
 
     public void setQuantum(int quantum) {
-        this.quantum = quantum;
+        this.quantum.set(quantum);
     }
 
     public int getWaitingTime() {
-        return waitingTime;
+        return waitingTime.get();
     }
 
     public void setWaitingTime(int waitingTime) {
-        this.waitingTime = waitingTime;
+        this.waitingTime.set(waitingTime);
     }
 
     public int getTurnaroundTime() {
-        return turnaroundTime;
+        return turnaroundTime.get();
     }
 
     public void setTurnaroundTime(int turnaroundTime) {
-        this.turnaroundTime = turnaroundTime;
+        this.turnaroundTime.set(turnaroundTime);
     }
 
     public int getAge() {
-        return age;
+        return age.get();
     }
 
     public void setAge(int age) {
-        this.age = age;
+        this.age.set(age);
     }
 
     public int getSecondBurstTime() {
-        return secondBurstTime;
+        return secondBurstTime.get();
     }
 
     public void setSecondBurstTime(int secondBurstTime) {
-        this.secondBurstTime = secondBurstTime;
+        this.secondBurstTime.set(secondBurstTime);
     }
 }
-
-   
-
