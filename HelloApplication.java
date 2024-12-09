@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,6 +160,9 @@ public class HelloApplication extends Application {
         TextField contextSwitchField = new TextField();
         contextSwitchField.setPromptText("Context");
 
+        TextField quantumTimeField = new TextField();
+        quantumTimeField.setPromptText("Quantum");
+
         Button addProcessButton = new Button("Add Process");
         addProcessButton.setOnAction(e -> {
             try {
@@ -168,14 +172,18 @@ public class HelloApplication extends Application {
                 int burstTime = Integer.parseInt(burstTimeField.getText());
                 int priority = Integer.parseInt(priorityField.getText());
                 contextSwitch = Integer.parseInt(contextSwitchField.getText());
+                int quantum = Integer.parseInt(quantumTimeField.getText());
 
-                processData.add(new Process(name, color, arrivalTime, burstTime, priority));
+
+                processData.add(new Process(name, color, arrivalTime, burstTime, priority, quantum));
 
                 nameField.clear();
                 arrivalTimeField.clear();
                 burstTimeField.clear();
                 priorityField.clear();
                 contextSwitchField.clear();
+                quantumTimeField.clear();
+
             } catch (NumberFormatException ex) {
                 showAlert("Invalid Input", "Please enter valid numeric values for Arrival Time, Burst Time, and Priority.");
             }
@@ -192,6 +200,8 @@ public class HelloApplication extends Application {
                 new Label("Burst Time:"), burstTimeField,
                 new Label("Priority:"), priorityField,
                 new Label("Context:"), contextSwitchField,
+                new Label("Quantum:"), quantumTimeField,
+
                 addProcessButton,
                 avgWaitingTimeLabel, avgTurnaroundTimeLabel
         );
