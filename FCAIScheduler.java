@@ -11,9 +11,8 @@ public class FCAIScheduler {
 
     public FCAIScheduler(List<Process> processes){
         this.processes = processes;
-        //this.executionLogs = processes;
         this.FinishTime = new ArrayList<>();
-        //  this.executionLogs = new ArrayList<>();
+      
     }
 
     public List<Process> simulateFCAIScheduling() {
